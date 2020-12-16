@@ -683,9 +683,6 @@ void FancyZones::ToggleEditor() noexcept
                     MB_OK | MB_ICONWARNING);
     }
 
-    const auto& fancyZonesData = FancyZonesDataInstance();
-    fancyZonesData.SerializeDeviceInfoToTmpFile(m_currentDesktopId);
-
     SHELLEXECUTEINFO sei{ sizeof(sei) };
     sei.fMask = { SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI };
     sei.lpFile = NonLocalizable::FZEditorExecutablePath;
@@ -1297,7 +1294,7 @@ bool FancyZones::IsSplashScreen(HWND window)
 void FancyZones::OnEditorExitEvent() noexcept
 {
     // Collect information about changes in zone layout after editor exited.
-    FancyZonesDataInstance().ParseDataFromTmpFiles();
+    FancyZonesDataInstance().LoadFancyZonesData();
 
     for (auto workArea : m_workAreaHandler.GetAllWorkAreas())
     {
